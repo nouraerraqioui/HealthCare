@@ -1,22 +1,16 @@
-package com.example.healthcare.model;
+package com.example.healthcare.DTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.time.LocalDateTime;
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class RendezVous {
-    @Id
-   private Long id;
+public class RendezVousDTO {
+    private Long id;
     private LocalDateTime dateRendezVous;
     private String statut;
-
 }
