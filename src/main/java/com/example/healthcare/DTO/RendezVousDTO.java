@@ -13,4 +13,6 @@ public class RendezVousDTO {
     private Long id;
     private LocalDateTime dateRendezVous;
     private String statut;
+    private Long idPatient;
+    private Long idMedecin;
 }

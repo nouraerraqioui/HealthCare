@@ -9,14 +9,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.annotation.processing.Generated;
-import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-public class Medicin{
+public class Medecin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

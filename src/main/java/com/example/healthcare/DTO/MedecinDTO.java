@@ -8,9 +8,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MedicinDTO {
-
-
+public class MedecinDTO {
         private Long id;
         private String nom;
         private String specialite;

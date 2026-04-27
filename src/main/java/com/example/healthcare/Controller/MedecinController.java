@@ -1,4 +1,4 @@
 package com.example.healthcare.Controller;
 
-public class MedicinController {
+public class MedecinController {
 }
