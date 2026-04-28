@@ -13,10 +13,10 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>FleetFlow</artifactId>
+    <artifactId>HealthCare</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>FleetFlow</name>
-    <description>FleetFlow API</description>
+    <name>HealthCare</name>
+    <description>HealthCare API</description>
 
     <properties>
         <java.version>17</java.version>

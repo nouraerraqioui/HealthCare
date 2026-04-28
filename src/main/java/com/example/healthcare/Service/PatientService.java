@@ -4,18 +4,18 @@ import com.example.healthcare.DTO.PatientDTO;
 import com.example.healthcare.Mapper.PatientMapper;
 import com.example.healthcare.Repository.PatientRepository;
 import com.example.healthcare.model.Patient;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+@AllArgsConstructor
 @Service
 public class PatientService {
     final private PatientRepository patientRepository;
     final private PatientMapper patientMapper;
 
-    public PatientService(PatientRepository patientRepository, PatientMapper patientMapper) {
-        this.patientRepository = patientRepository;
-        this.patientMapper = patientMapper;
-    }
+
     public PatientDTO AjouterPatient(PatientDTO patientDTO){
        return patientMapper.toDTO( patientRepository.save(patientMapper.toEntity(patientDTO)));
     }

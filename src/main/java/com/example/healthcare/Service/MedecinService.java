@@ -5,19 +5,16 @@ import com.example.healthcare.Mapper.MedecinMapper;
 import com.example.healthcare.Repository.MedecinRepository;
 import com.example.healthcare.model.Medecin;
 import com.example.healthcare.model.Patient;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@AllArgsConstructor
 @Service
 public class MedecinService {
     final private MedecinRepository medecinRepository;
     final private MedecinMapper medecinMapper;
 
-    public MedecinService(MedecinRepository medecinRepository, MedecinMapper medecinMapper) {
-        this.medecinRepository = medecinRepository;
-        this.medecinMapper = medecinMapper;
-    }
     public MedecinDTO AjouterMedecin(MedecinDTO medecinDTO){
         return medecinMapper.toDTO(medecinRepository.save(medecinMapper.toEntity(medecinDTO)));
     }public MedecinDTO ModifierMedecin(Long id,MedecinDTO medecinDTO){
