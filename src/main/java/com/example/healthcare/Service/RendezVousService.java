@@ -24,8 +24,10 @@ public class RendezVousService {
 
 
     public RendezVousDTO AjouterRendezVous( RendezVousDTO rendezVousDTO){
-        Patient patient=patientRepository.findById(rendezVousDTO.getIdPatient()).orElseThrow(()->new RuntimeException("patient n'exist pas"));
-        Medecin medecin = medecinRepository.findById(rendezVousDTO.getIdMedecin()).orElseThrow(()->new RuntimeException("medecin'exist pas"));
+        System.out.println(rendezVousDTO.getPatientId());
+        System.out.println(rendezVousDTO.getMedecinId());
+        Patient patient=patientRepository.findById(rendezVousDTO.getPatientId()).orElseThrow(()->new RuntimeException("patient n'existe pas"));
+        Medecin medecin = medecinRepository.findById(rendezVousDTO.getMedecinId()).orElseThrow(()->new RuntimeException("medecin'existe pas"));
         RendezVous rendezVous=rendezVousMapper.toEntity(rendezVousDTO);
         rendezVous.setPatient(patient);
         rendezVous.setMedecin(medecin);
@@ -37,10 +39,10 @@ public class RendezVousService {
         rendezVousMapper.updateEntityfromDto(rendezVousDTO,rendezVous);
        return  rendezVousMapper.toDTO(rendezVousRepository.save(rendezVous));
     }
-    public RendezVous AnnulerRenderVous(Long id){
+    public RendezVousDTO AnnulerRenderVous(Long id){
       RendezVous rendezVous=  rendezVousRepository.findById(id).orElseThrow(()->new RuntimeException("rendez vous n'existe pas"+id));
         rendezVous.setStatut("ANNULE");
-        return rendezVousRepository.save(rendezVous);
+        return rendezVousMapper.toDTO(rendezVousRepository.save(rendezVous));
     }
     public List<RendezVousDTO> ListerRendezVous(){
       return rendezVousMapper.toListDTO(rendezVousRepository.findAll());
@@ -48,7 +50,7 @@ public class RendezVousService {
     public RendezVousDTO ChercherParPatient(Long id){
        return rendezVousMapper.toDTO( rendezVousRepository.findByPatient_Id(id));
     }
-    public RendezVousDTO ChercherParMedicin(Long id){
+    public RendezVousDTO ChercherParMedecin(Long id){
         return rendezVousMapper.toDTO( rendezVousRepository.findByMedecin_Id(id));
     }
 }

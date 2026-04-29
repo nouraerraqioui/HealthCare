@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class RendezVous {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
+    private Long id;
     private LocalDateTime dateRendezVous;
     private String statut;
     @ManyToOne

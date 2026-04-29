@@ -28,15 +28,15 @@ public class DossierMedicalService {
 
         dossier.setDiagnostic(diagnostic);
 
-        return dossierMedicalMapper.toDTO(dossier);
+        return dossierMedicalMapper.toDTO(dossierMedicalRepository.save(dossier));
     }
     public DossierMedicalDTO AjouterObservation(Long id,String observation){
         DossierMedical dossier = dossierMedicalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Dossier n'existe pas"));
 
-        dossier.setDiagnostic(observation);
+        dossier.setObservations(observation);
 
-        return dossierMedicalMapper.toDTO(dossier);
+        return dossierMedicalMapper.toDTO(dossierMedicalRepository.save(dossier));
     }
     public DossierMedicalDTO ConsulterDossier(Long id){
         DossierMedical dossier = dossierMedicalRepository.findById(id)

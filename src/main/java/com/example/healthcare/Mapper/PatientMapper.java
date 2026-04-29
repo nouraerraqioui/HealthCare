@@ -4,6 +4,7 @@ import com.example.healthcare.DTO.PatientDTO;
 import com.example.healthcare.model.Patient;
 import org.hibernate.sql.Update;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.ReportingPolicy;
 
@@ -16,5 +17,7 @@ public interface PatientMapper {
     Patient toEntity(PatientDTO patientDTO);
     PatientDTO toDTO(Patient patient);
     List<PatientDTO> toListDTO(List<Patient> patients );
+
+    @Mapping( target = "id", ignore = true)
     Patient updateEntityfromDto(PatientDTO patientDTO, @MappingTarget Patient patient);
 }

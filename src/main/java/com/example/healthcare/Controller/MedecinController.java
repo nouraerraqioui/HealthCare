@@ -20,7 +20,7 @@ import java.util.List;
             medecinService.AjouterMedecin(medecinDTO);
         }
         @PutMapping("/{id}")
-        public void ModifierMedecin(@RequestBody MedecinDTO medecinDTO,@PathVariable Long id){
+        public void ModifierMedecin(@PathVariable Long id,@RequestBody MedecinDTO medecinDTO){
           medecinService.ModifierMedecin(id,medecinDTO);
         }
         @DeleteMapping("/{id}")
@@ -31,8 +31,6 @@ import java.util.List;
         public List<MedecinDTO> ListerMedecins(){
             return medecinService.ListerAll();
         }
-
-
     }
 
 

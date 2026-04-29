@@ -14,12 +14,12 @@ public class PatientController {
 final private PatientService patientService;
 
 @PostMapping()
-    public void AjouterPatient(@RequestBody PatientDTO patientDTO){
-    patientService.AjouterPatient(patientDTO);
+    public PatientDTO AjouterPatient(@RequestBody PatientDTO patientDTO){
+  return   patientService.AjouterPatient(patientDTO);
 }
 @PutMapping("/{id}")
-    public void ModifierPatient(@RequestBody PatientDTO patientDTO,@PathVariable Long id){
-    patientService.ModifierPatient(id,patientDTO);
+    public PatientDTO ModifierPatient(@PathVariable Long id,@RequestBody PatientDTO patientDTO){
+   return patientService.ModifierPatient(id,patientDTO);
 }
 @DeleteMapping("/{id}")
     public void SupprimerPatient(@PathVariable Long id){
