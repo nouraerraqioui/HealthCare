@@ -27,7 +27,7 @@ public class MedecinService {
       Medecin medecin= medecinRepository.findById(id).orElseThrow(()->new RuntimeException("medecin n'exist pas"+id));
         medecinRepository.delete(medecin);
     }
-    public List<MedecinDTO> ListerAll(){
+    public List<MedecinDTO> ListerMedecins(){
       return medecinMapper.toList( medecinRepository.findAll());
     }
 

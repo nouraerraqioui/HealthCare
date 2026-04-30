@@ -17,7 +17,7 @@ public class DossierMedicalService {
 
 
     public DossierMedicalDTO CreeDossierMedical(DossierMedicalDTO dossierMedicalDTO){
-        Patient patient=patientRepository.findById(dossierMedicalDTO.getIdPatient()).orElseThrow(()->new RuntimeException("patient n'existe pas"));
+          Patient patient=patientRepository.findById(dossierMedicalDTO.getIdPatient()).orElseThrow(()->new RuntimeException("patient n'existe pas"));
           DossierMedical dossierMedical=  dossierMedicalMapper.toEntity(dossierMedicalDTO);
           dossierMedical.setPatient(patient);
          return dossierMedicalMapper.toDTO(dossierMedicalRepository.save(dossierMedical));
