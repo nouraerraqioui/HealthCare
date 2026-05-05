@@ -9,6 +9,8 @@ import lombok.Setter;
 import javax.annotation.processing.Generated;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -25,6 +27,8 @@ public class Patient {
     private String email;
     private String telephone;
     private LocalDate dateNaissance;
+    @OneToMany(mappedBy = "patient")
+    private List<RendezVous> rendezVous;
 
     @OneToOne(mappedBy = "patient",cascade = CascadeType.ALL)
     private DossierMedical dossierMedical;

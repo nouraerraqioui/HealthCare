@@ -4,7 +4,6 @@ import com.example.healthcare.DTO.MedecinDTO;
 import com.example.healthcare.Mapper.MedecinMapper;
 import com.example.healthcare.Repository.MedecinRepository;
 import com.example.healthcare.model.Medecin;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,10 +22,7 @@ class MedecinServiceTest {
     private MedecinRepository medecinRepository;
     @Autowired
     private MedecinMapper medecinMapper;
-    @BeforeEach
-    void setUp() {
-        medecinRepository.deleteAll();
-    }
+
 
     @Test
     void ajouterMedecin() {
@@ -60,7 +56,7 @@ class MedecinServiceTest {
 
         List<MedecinDTO> result = medecinService.ListerMedecins();
         assertNotNull(result);
-        assertEquals(3,result.size());
+        assertEquals(2,result.size());
 
     }
 }

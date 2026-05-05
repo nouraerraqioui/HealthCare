@@ -14,7 +14,8 @@ public class RendezVous {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime dateRendezVous;
-    private String statut;
+    @Enumerated(EnumType.STRING)
+    private Status_rendezVous statut;
     @ManyToOne
     @JoinColumn(name = "medecin_id")
     private Medecin medecin;

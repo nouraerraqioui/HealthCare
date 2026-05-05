@@ -17,6 +17,7 @@ public class RendezVousDTO {
     private Long id;
     private LocalDateTime dateRendezVous;
     private String statut;
-    private Long patientId;
     private Long medecinId;
+    private Long patientId;
+
 }

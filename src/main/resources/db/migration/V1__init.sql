@@ -12,14 +12,14 @@ CREATE TABLE medecin(
                         id BIGINT AUTO_INCREMENT PRIMARY KEY,
                         nom VARCHAR(50) NOT NULL,
                         specialite VARCHAR(50) NOT NULL,
-                        email VARCHAR(50) NOT NULL UNIQUE,
+                        email VARCHAR(50) NOT NULL ,
                         telephone VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE rendez_vous(
                             id BIGINT AUTO_INCREMENT PRIMARY KEY,
                             date_rendez_vous DATETIME NOT NULL,
-                            statut VARCHAR(20) NOT NULL,
+                            statut enum('EN_ATTENTE','CONFIRME','ANNULE') NOT NULL,
 
                             medecin_id BIGINT,
                             patient_id BIGINT,
