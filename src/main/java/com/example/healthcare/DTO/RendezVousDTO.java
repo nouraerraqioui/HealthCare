@@ -1,8 +1,7 @@
 package com.example.healthcare.DTO;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +14,17 @@ import java.time.LocalDateTime;
 public class RendezVousDTO {
 
     private Long id;
+
+    @NotNull(message = "La date est obligatoire")
     private LocalDateTime dateRendezVous;
+
     private String statut;
+
+    @NotNull(message = "L'ID du médecin est obligatoire")
     private Long medecinId;
+
+    @NotNull(message = "L'ID du patient est obligatoire")
     private Long patientId;
 
 }
+

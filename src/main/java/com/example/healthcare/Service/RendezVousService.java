@@ -53,4 +53,5 @@ public class RendezVousService {
     public RendezVousDTO ChercherParMedecin(Long id){
         return rendezVousMapper.toDTO( rendezVousRepository.findByMedecin_Id(id));
     }
+
 }

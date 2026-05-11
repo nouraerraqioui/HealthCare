@@ -42,6 +42,7 @@ class PatientServiceTest {
         patient.setPrenom("gharib");
         patient.setEmail("otmane@gmail.com");
         patient.setTelephone("062345678");
+        patient.setDateNaissance(LocalDate.of(2000, 1, 1));
        Patient result= patientRepository.save(patient);
 
         PatientDTO patientDTO=new PatientDTO();
@@ -49,6 +50,7 @@ class PatientServiceTest {
         patientDTO.setPrenom("ikram");
         patientDTO.setEmail("alikram@gmail.com");
         patientDTO.setTelephone("062345678");
+        patientDTO.setDateNaissance(LocalDate.of(2000, 1, 1));
         PatientDTO modofie= patientService.ModifierPatient(result.getId(),patientDTO);
         assertEquals(patientDTO,modofie);
 
