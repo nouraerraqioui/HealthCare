@@ -1,47 +1,28 @@
 package com.example.healthcare.Controller;
 
-import com.example.healthcare.Repository.UserRepository;
-import com.example.healthcare.model.User;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.healthcare.DTO.LoginRequest;
+import com.example.healthcare.DTO.UserRequestDTO;
+import com.example.healthcare.DTO.UserResponseDTO;
+import com.example.healthcare.Service.AuthService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/auth")
 public class RegestrationLoginController {
-    private final UserRepository userRepository;
 
-    public RegestrationLoginController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final AuthService authService;
+
+    public RegestrationLoginController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody User user) {
-
-        if (userRepository.findByUsername(user.getUsername()) != null) {
-            return "username already exists";
-        }
-
-        userRepository.save(user);
-
-        return "user created successfully";
+    public UserResponseDTO registerUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return authService.register(userRequestDTO);
     }
+
     @PostMapping("/login")
-    public String loginUser(@RequestBody User user) {
-
-        User existingUser = userRepository.findByUsername(user.getUsername());
-
-        if (existingUser == null) {
-            return "user not found";
-        }
-
-        if (!existingUser.getPassword().equals(user.getPassword())) {
-            return "invalid password";
-        }
-
-        return "login successful";
+    public UserResponseDTO loginUser(@RequestBody LoginRequest dto) {
+        return authService.login(dto);
     }
-    }
-
+}

@@ -3,6 +3,7 @@ package com.example.healthcare.Configuration;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -27,6 +28,7 @@ public class JwtUtils {
         return createToken(claims, username);
     }
 
+
     private String createToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder()
@@ -38,15 +40,12 @@ public class JwtUtils {
                 .compact();
     }
 
-    // 🔍 Extract username
+
     public String extractUsername(String token) {
         return extractClaims(token).getSubject();
     }
 
-    // ⏳ Check expiration
-    public boolean isTokenExpired(String token) {
-        return extractClaims(token).getExpiration().before(new Date());
-    }
+
 
     private Claims extractClaims(String token) {
         return Jwts.parserBuilder()
@@ -55,8 +54,14 @@ public class JwtUtils {
                 .parseClaimsJws(token)
                 .getBody();
     }
+    public boolean validateToken(String token, UserDetails userDetails) {
+        String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+    public boolean isTokenExpired(String token) {
+        return extractClaims(token).getExpiration().before(new Date());
+    }
 
-    // 🔑 Secret Key
     private Key getSignKey() {
         byte[] keyBytes = secretKey.getBytes();
         return Keys.hmacShaKeyFor(keyBytes);

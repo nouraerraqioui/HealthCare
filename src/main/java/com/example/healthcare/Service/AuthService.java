@@ -1,7 +1,6 @@
 package com.example.healthcare.Service;
 
 import com.example.healthcare.Configuration.JwtUtils;
-import com.example.healthcare.DTO.AuthResponse;
 import com.example.healthcare.DTO.LoginRequest;
 import com.example.healthcare.DTO.UserRequestDTO;
 import com.example.healthcare.DTO.UserResponseDTO;
@@ -27,27 +26,42 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
-  public UserResponseDTO register(UserRequestDTO userRequestDTO){
-      if(userRepository.findByUsername(userRequestDTO.getUsername()).isPresent()){
+    public UserResponseDTO register(UserRequestDTO userRequestDTO){
 
+        if(userRepository.findByUsername(userRequestDTO.getUsername()).isPresent()){
             throw new RuntimeException("Username déjà exists");
         }
 
         if(userRepository.findByEmail(userRequestDTO.getEmail()).isPresent()){
-            throw new RuntimeException("Email déjà exists");}
+            throw new RuntimeException("Email déjà exists");
+        }
 
         User user = userMapper.toEntity(userRequestDTO);
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
 
-      userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
-        return userMapper.toDTO(userRepository.save(user));
+        String token = jwtUtils.generateToken(savedUser.getUsername());
+
+        UserResponseDTO dto = userMapper.toDTO(savedUser);
+        dto.setToken(token);
+
+        return dto;
     }
+    public UserResponseDTO login(LoginRequest dto){
 
-    public AuthResponse login(LoginRequest dto){
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword())
+        );
 
-        String token = jwtUtils.generateToken(dto.getUsername());
-        return new AuthResponse(token);
+        User user = userRepository.findByUsername(dto.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String token = jwtUtils.generateToken(user.getUsername());
+
+        UserResponseDTO response = userMapper.toDTO(user);
+        response.setToken(token);
+
+        return response;
     }
 }
