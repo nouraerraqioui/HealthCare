@@ -7,6 +7,7 @@ import com.example.healthcare.model.Patient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @AllArgsConstructor
@@ -28,10 +29,10 @@ public class PatientService {
         Patient patient= patientRepository.findById(id).orElseThrow(()->new RuntimeException("Patient n'exist pas"+id));
         patientRepository.delete(patient);
     }
-    public List<PatientDTO> ListerPatients(){
+    public List<PatientDTO> ListerPatients(Pageable pageable){
          return patientMapper.toListDTO(patientRepository.findAll());
     }
-public PatientDTO ConsulterPatient(Long id){
+public PatientDTO ConsulterPatient(Long id, Pageable pageable){
       return patientMapper.toDTO( patientRepository.findById(id).orElseThrow(()->new RuntimeException("Patient n'exist pas"+id)));
 }
 

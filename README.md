@@ -9,7 +9,7 @@ les médecins, les rendez-vous et les dossiers médicaux.
 
 ## Technologies utilisées
 
-* Java 17 / 21
+* Java 17 
 * Spring Boot
 * Spring Data JPA / Hibernate
 * Maven
@@ -67,7 +67,9 @@ Architecture MVC :
 * DTO
 
 ---
+# Sécurité
 
+Le projet intègre Spring Security avec authentification JWT afin de sécuriser les accès à l’API.
 
 
 ##  Documentation API
@@ -93,6 +95,3 @@ Le repository contient tous les fichiers nécessaires à l’exécution de l’a
 ![img_1.png](img_1.png)
 ---
 
-## Auteur
-
-* Ton Nom

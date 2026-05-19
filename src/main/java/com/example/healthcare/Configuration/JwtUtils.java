@@ -57,10 +57,7 @@ public class JwtUtils {
                 .parseClaimsJws(token)
                 .getBody();
     }
-    public boolean validateToken(String token, UserDetails userDetails) {
-        String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-    }
+
     public boolean isTokenExpired(String token) {
         return extractClaims(token).getExpiration().before(new Date());
     }

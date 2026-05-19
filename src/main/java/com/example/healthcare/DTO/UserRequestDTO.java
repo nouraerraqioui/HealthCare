@@ -1,5 +1,6 @@
 package com.example.healthcare.DTO;
 
+import com.example.healthcare.model.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -16,6 +17,8 @@ public class UserRequestDTO {
     private String email;
     @Size(min = 6, message = "Le mot de passe doit contenir au moins 6 caractères")
     private String password;
-    }
+    private Role role;
+
+}
 
 

@@ -3,8 +3,10 @@ package com.example.healthcare.Controller;
 import com.example.healthcare.DTO.PatientDTO;
 import com.example.healthcare.Service.PatientService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @AllArgsConstructor
@@ -26,12 +28,14 @@ final private PatientService patientService;
     patientService.SupprimerPatient(id);
 }
 @GetMapping
-    public List<PatientDTO> ListerPatients(){
-    return patientService.ListerPatients();
+@PreAuthorize("hasRole('ADMIN')")
+    public List<PatientDTO> ListerPatients(Pageable pageable){
+    return patientService.ListerPatients(pageable);
 }
 @GetMapping("/{id}")
-    public PatientDTO ConsulterPatient(@PathVariable Long id){
-    return patientService.ConsulterPatient(id);
+@PreAuthorize("hasRole('ADMIN')")
+    public PatientDTO ConsulterPatient(@PathVariable Long id,Pageable pageable){
+    return patientService.ConsulterPatient(id,pageable);
 }
 
 }

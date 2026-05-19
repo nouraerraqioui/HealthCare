@@ -6,6 +6,7 @@ import com.example.healthcare.DTO.UserRequestDTO;
 import com.example.healthcare.DTO.UserResponseDTO;
 import com.example.healthcare.Mapper.UserMapper;
 import com.example.healthcare.Repository.UserRepository;
+import com.example.healthcare.model.Role;
 import com.example.healthcare.model.User;
 
 import lombok.RequiredArgsConstructor;
@@ -38,25 +39,20 @@ public class AuthService {
 
         User user = userMapper.toEntity(userRequestDTO);
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-
+        user.setRole(Role.PATIENT);
         User savedUser = userRepository.save(user);
-
         String token = jwtUtils.generateToken(savedUser.getUsername());
-
         UserResponseDTO dto = userMapper.toDTO(savedUser);
         dto.setToken(token);
 
         return dto;
     }
     public UserResponseDTO login(LoginRequest dto){
-
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
 
         User user = userRepository.findByUsername(dto.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         String token = jwtUtils.generateToken(user.getUsername());
-
         UserResponseDTO response = userMapper.toDTO(user);
         response.setToken(token);
 
