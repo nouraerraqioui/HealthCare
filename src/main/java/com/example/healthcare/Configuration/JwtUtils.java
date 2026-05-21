@@ -1,8 +1,10 @@
 package com.example.healthcare.Configuration;
 
+import com.example.healthcare.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +23,17 @@ public class JwtUtils {
     private long expirationTime;
 
 
-   public String generateToken(String username) {
+   public String generateToken(User user) {
 
         Map<String, Object> claims = new HashMap<>();
+       String role = user.getAuthorities().stream()
+               .map(GrantedAuthority::getAuthority)
+               .findFirst()
+               .orElse("");
+            claims.put("role", role);
 
-        return createToken(claims, username);
+       return createToken(claims, user.getUsername());
+
     }
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);

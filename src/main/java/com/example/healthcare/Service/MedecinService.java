@@ -4,11 +4,10 @@ import com.example.healthcare.DTO.MedecinDTO;
 import com.example.healthcare.Mapper.MedecinMapper;
 import com.example.healthcare.Repository.MedecinRepository;
 import com.example.healthcare.model.Medecin;
-import com.example.healthcare.model.Patient;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 @AllArgsConstructor
 @Service
 public class MedecinService {
@@ -27,8 +26,11 @@ public class MedecinService {
       Medecin medecin= medecinRepository.findById(id).orElseThrow(()->new RuntimeException("medecin n'exist pas"+id));
         medecinRepository.delete(medecin);
     }
-    public List<MedecinDTO> ListerMedecins(){
-      return medecinMapper.toList( medecinRepository.findAll());
+    public Page<Medecin> ListerMedecins(Pageable pageable) {
+        return medecinRepository.findAll(pageable);
+    }
+    public Page<Medecin> searchBySpecialite(String specialite, Pageable pageable) {
+        return medecinRepository.findBySpecialite(specialite, pageable);
     }
 
     }

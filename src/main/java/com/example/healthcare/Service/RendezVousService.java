@@ -12,6 +12,8 @@ import com.example.healthcare.model.Status_rendezVous;
 import jakarta.transaction.Transaction;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,8 +46,8 @@ public class RendezVousService {
         rendezVous.setStatut(Status_rendezVous.ANNULE);
         return rendezVousMapper.toDTO(rendezVousRepository.save(rendezVous));
     }
-    public List<RendezVousDTO> ListerRendezVous(){
-      return rendezVousMapper.toListDTO(rendezVousRepository.findAll());
+    public Page<RendezVous> ListerRendezVous(Pageable pageable){
+      return rendezVousRepository.findAll(pageable);
     }
     public RendezVousDTO ChercherParPatient(Long id){
        return rendezVousMapper.toDTO( rendezVousRepository.findByPatient_Id(id));
@@ -53,5 +55,7 @@ public class RendezVousService {
     public RendezVousDTO ChercherParMedecin(Long id){
         return rendezVousMapper.toDTO( rendezVousRepository.findByMedecin_Id(id));
     }
-
+    public Page<RendezVous> ChercherParStatut(String statut, Pageable pageable) {
+        return rendezVousRepository.findByStatutContainingIgnoreCase(statut, pageable);
+    }
 }

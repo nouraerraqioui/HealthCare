@@ -4,7 +4,11 @@ import com.example.healthcare.DTO.MedecinDTO;
 import com.example.healthcare.DTO.PatientDTO;
 import com.example.healthcare.Service.MedecinService;
 import com.example.healthcare.Service.PatientService;
+import com.example.healthcare.model.Medecin;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,21 +20,30 @@ import java.util.List;
         final private MedecinService medecinService;
 
         @PostMapping()
+        @PreAuthorize("hasRole('ADMIN')")
         public void AjouterMedecin(@RequestBody MedecinDTO medecinDTO){
             medecinService.AjouterMedecin(medecinDTO);
         }
         @PutMapping("/{id}")
+        @PreAuthorize("hasRole('ADMIN')")
         public void ModifierMedecin(@PathVariable Long id,@RequestBody MedecinDTO medecinDTO){
           medecinService.ModifierMedecin(id,medecinDTO);
         }
         @DeleteMapping("/{id}")
+        @PreAuthorize("hasRole('ADMIN')")
         public void SupprimerMedecin(@PathVariable Long id){
            medecinService.SupprimerMedecin(id);
         }
         @GetMapping
-        public List<MedecinDTO> ListerMedecins(){
-            return medecinService.ListerMedecins();
+        @PreAuthorize("hasRole('ADMIN')")
+        public Page<Medecin> ListerMedecins(Pageable pageable){
+            return medecinService.ListerMedecins(pageable);
         }
+    @GetMapping("/recherche")
+    @PreAuthorize("isAuthenticated()")
+    public Page<Medecin> searchMedecinBySpecialite(@RequestParam String specialite, Pageable pageable) {
+        return medecinService.searchBySpecialite(specialite, pageable);
+    }
     }
 
 

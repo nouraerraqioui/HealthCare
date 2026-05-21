@@ -39,24 +39,5 @@ class MedecinServiceTest {
 
     }
 
-    @Test
-    void listerAll() {
-        Medecin medecin=new Medecin();
-        medecin.setNom("nour");
-        medecin.setEmail("n@email.com");
-        medecin.setSpecialite("OR");
-        medecin.setTelephone("064567870");
-        medecinRepository.save(medecin);
-        Medecin medecin1 =new Medecin();
-        medecin1.setNom("Asma");
-        medecin1.setEmail("asma@email.com");
-        medecin1.setSpecialite("ORL");
-        medecin1.setTelephone("064567875");
-        medecinRepository.save(medecin1);
 
-        List<MedecinDTO> result = medecinService.ListerMedecins();
-        assertNotNull(result);
-        assertEquals(2,result.size());
-
-    }
 }

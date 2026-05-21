@@ -41,7 +41,7 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
         user.setRole(Role.PATIENT);
         User savedUser = userRepository.save(user);
-        String token = jwtUtils.generateToken(savedUser.getUsername());
+        String token = jwtUtils.generateToken(savedUser);
         UserResponseDTO dto = userMapper.toDTO(savedUser);
         dto.setToken(token);
 
@@ -52,7 +52,7 @@ public class AuthService {
 
         User user = userRepository.findByUsername(dto.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        String token = jwtUtils.generateToken(user.getUsername());
+        String token = jwtUtils.generateToken(user);
         UserResponseDTO response = userMapper.toDTO(user);
         response.setToken(token);
 

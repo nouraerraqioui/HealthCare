@@ -2,7 +2,11 @@ package com.example.healthcare.Controller;
 
 import com.example.healthcare.DTO.RendezVousDTO;
 import com.example.healthcare.Service.RendezVousService;
+import com.example.healthcare.model.RendezVous;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,23 +17,32 @@ public class RendezVousController {
     final private RendezVousService rendezVousService;
 
     @PostMapping
+    @PreAuthorize("hasRole('PATIENT')")
     public RendezVousDTO CreeRendezVous(@RequestBody RendezVousDTO rendezVousDTO){
         return rendezVousService.AjouterRendezVous(rendezVousDTO);
     }
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
     public void ModifierRendezVous(@PathVariable Long id,@RequestBody RendezVousDTO rendezVousDTO){
         rendezVousService.ModifierRendezVous(id, rendezVousDTO);
     }
     @GetMapping
-    public List<RendezVousDTO> ListerRendezVous(){
-       return  rendezVousService.ListerRendezVous();
+    @PreAuthorize("hasRole('ADMIN')")
+    public Page<RendezVous> ListerRendezVous(Pageable pageable ){
+       return  rendezVousService.ListerRendezVous(pageable);
     }
     @GetMapping("/medecin/{idMedecin}")
     public RendezVousDTO ChercherParMedicin(@PathVariable Long idMedecin){
         return        rendezVousService.ChercherParMedecin(idMedecin);
     }
     @GetMapping("/patient/{idPatient}")
+    @PreAuthorize("hasRole('ADMIN')")
     public RendezVousDTO ChercherParPatient(@PathVariable Long idPatient){
         return  rendezVousService.ChercherParPatient(idPatient);
+    }
+    @GetMapping("/recherche")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
+    public Page<RendezVous> ChercherParStatut(@RequestParam String statut, Pageable pageable) {
+        return rendezVousService.ChercherParStatut(statut, pageable);
     }
 }

@@ -5,6 +5,7 @@ import com.example.healthcare.Mapper.PatientMapper;
 import com.example.healthcare.Repository.PatientRepository;
 import com.example.healthcare.model.Patient;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Pageable;
@@ -29,11 +30,11 @@ public class PatientService {
         Patient patient= patientRepository.findById(id).orElseThrow(()->new RuntimeException("Patient n'exist pas"+id));
         patientRepository.delete(patient);
     }
-    public List<PatientDTO> ListerPatients(Pageable pageable){
-         return patientMapper.toListDTO(patientRepository.findAll());
+    public Page<Patient> ListerPatients(Pageable pageable){
+         return patientRepository.findAll(pageable);
     }
-public PatientDTO ConsulterPatient(Long id, Pageable pageable){
-      return patientMapper.toDTO( patientRepository.findById(id).orElseThrow(()->new RuntimeException("Patient n'exist pas"+id)));
+public Page<Patient> ConsulterPatient(String nom, Pageable pageable){
+        return  patientRepository.findByNom(nom,pageable);
 }
 
 }
