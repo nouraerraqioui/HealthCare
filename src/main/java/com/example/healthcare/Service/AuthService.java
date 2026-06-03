@@ -3,7 +3,7 @@ package com.example.healthcare.Service;
 import com.example.healthcare.Configuration.JwtUtils;
 import com.example.healthcare.DTO.LoginRequest;
 import com.example.healthcare.DTO.UserRequestDTO;
-import com.example.healthcare.DTO.UserResponseDTO;
+import com.example.healthcare.DTO.AuthResponse;
 import com.example.healthcare.Mapper.UserMapper;
 import com.example.healthcare.Repository.UserRepository;
 import com.example.healthcare.model.Role;
@@ -27,7 +27,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
-    public UserResponseDTO register(UserRequestDTO userRequestDTO){
+    public AuthResponse register(UserRequestDTO userRequestDTO){
 
         if(userRepository.findByUsername(userRequestDTO.getUsername()).isPresent()){
             throw new RuntimeException("Username déjà exists");
@@ -42,18 +42,18 @@ public class AuthService {
         user.setRole(Role.PATIENT);
         User savedUser = userRepository.save(user);
         String token = jwtUtils.generateToken(savedUser);
-        UserResponseDTO dto = userMapper.toDTO(savedUser);
+        AuthResponse dto = userMapper.toDTO(savedUser);
         dto.setToken(token);
 
         return dto;
     }
-    public UserResponseDTO login(LoginRequest dto){
+    public AuthResponse login(LoginRequest dto){
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
 
         User user = userRepository.findByUsername(dto.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         String token = jwtUtils.generateToken(user);
-        UserResponseDTO response = userMapper.toDTO(user);
+        AuthResponse response = userMapper.toDTO(user);
         response.setToken(token);
 
         return response;

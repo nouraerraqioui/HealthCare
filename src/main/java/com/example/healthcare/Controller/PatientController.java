@@ -5,10 +5,11 @@ import com.example.healthcare.Service.PatientService;
 import com.example.healthcare.model.Patient;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
+
 
 
 @AllArgsConstructor
@@ -35,13 +36,22 @@ final private PatientService patientService;
 }
 @GetMapping
 @PreAuthorize("hasAnyRole('ADMIN','MEDECIN')")
-    public Page<Patient> ListerPatients(Pageable pageable){
-    return patientService.ListerPatients(pageable);
-}
-@GetMapping("/{nom}")
-@PreAuthorize("hasRole('ADMIN')")
-    public Page<Patient> ConsulterPatient(@PathVariable String nom,Pageable pageable){
-    return patientService.ConsulterPatient(nom,pageable);
+    public Page<Patient> ListerPatients(  @RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "5") int size,
+                                          @RequestParam(defaultValue = "nom") String sortBy) {
+
+    return patientService.ListerPatients(page, size, sortBy);
+
 }
 
+@GetMapping("/recherche")
+@PreAuthorize("hasRole('ADMIN')")
+    public Page<Patient> ConsulterPatient(
+        @RequestParam String nom,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "nom") String sortBy) {
+
+    return patientService.ConsulterPatient(nom, page, size, sortBy);
+}
 }

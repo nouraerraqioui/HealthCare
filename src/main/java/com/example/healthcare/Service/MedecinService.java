@@ -5,7 +5,10 @@ import com.example.healthcare.Mapper.MedecinMapper;
 import com.example.healthcare.Repository.MedecinRepository;
 import com.example.healthcare.model.Medecin;
 import lombok.AllArgsConstructor;
+import org.apache.catalina.connector.Request;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 @AllArgsConstructor
@@ -26,10 +29,14 @@ public class MedecinService {
       Medecin medecin= medecinRepository.findById(id).orElseThrow(()->new RuntimeException("medecin n'exist pas"+id));
         medecinRepository.delete(medecin);
     }
-    public Page<Medecin> ListerMedecins(Pageable pageable) {
+    public Page<Medecin> ListerMedecins(int page,int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         return medecinRepository.findAll(pageable);
     }
-    public Page<Medecin> searchBySpecialite(String specialite, Pageable pageable) {
+    public Page<Medecin> ChercherparSpecialite(String specialite,int page,int size, String sortBy) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
         return medecinRepository.findBySpecialite(specialite, pageable);
     }
 

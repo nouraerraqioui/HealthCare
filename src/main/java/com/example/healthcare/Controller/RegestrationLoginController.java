@@ -2,7 +2,7 @@ package com.example.healthcare.Controller;
 
 import com.example.healthcare.DTO.LoginRequest;
 import com.example.healthcare.DTO.UserRequestDTO;
-import com.example.healthcare.DTO.UserResponseDTO;
+import com.example.healthcare.DTO.AuthResponse;
 import com.example.healthcare.Service.AuthService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +17,13 @@ public class RegestrationLoginController {
     }
 
     @PostMapping("/register")
-    public UserResponseDTO registerUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public AuthResponse registerUser(@RequestBody UserRequestDTO userRequestDTO) {
         return authService.register(userRequestDTO);
     }
 
     @PostMapping("/login")
-    public UserResponseDTO loginUser(@RequestBody LoginRequest dto) {
+    public AuthResponse loginUser(@RequestBody LoginRequest dto) {
+
         return authService.login(dto);
     }
 }

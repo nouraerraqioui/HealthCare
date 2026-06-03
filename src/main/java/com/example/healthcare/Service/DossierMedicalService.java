@@ -7,6 +7,9 @@ import com.example.healthcare.Repository.PatientRepository;
 import com.example.healthcare.model.DossierMedical;
 import com.example.healthcare.model.Patient;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 @AllArgsConstructor
 @Service
@@ -44,5 +47,14 @@ public class DossierMedicalService {
         return dossierMedicalMapper.toDTO(dossier);
 
     }
+    public Page<DossierMedical> ListerDossiers(
+            int page,
+            int size
+    ) {
 
+        Pageable pageable = PageRequest.of(page, size);
+
+        return dossierMedicalRepository.findAll(pageable);
+    }
 }
+

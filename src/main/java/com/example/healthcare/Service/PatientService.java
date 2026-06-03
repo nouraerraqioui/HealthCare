@@ -6,10 +6,12 @@ import com.example.healthcare.Repository.PatientRepository;
 import com.example.healthcare.model.Patient;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
-import java.util.List;
+
 
 @AllArgsConstructor
 @Service
@@ -30,11 +32,18 @@ public class PatientService {
         Patient patient= patientRepository.findById(id).orElseThrow(()->new RuntimeException("Patient n'exist pas"+id));
         patientRepository.delete(patient);
     }
-    public Page<Patient> ListerPatients(Pageable pageable){
-         return patientRepository.findAll(pageable);
+    public Page<Patient> ListerPatients(int page, int size, String sortBy) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return patientRepository.findAll(pageable);
     }
-public Page<Patient> ConsulterPatient(String nom, Pageable pageable){
-        return  patientRepository.findByNom(nom,pageable);
-}
+
+    public Page<Patient> ConsulterPatient(String nom, int page, int size, String sortBy) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return patientRepository.findByNom(nom, pageable);
+    }
 
 }

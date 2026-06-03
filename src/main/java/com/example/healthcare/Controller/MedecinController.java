@@ -36,13 +36,19 @@ import java.util.List;
         }
         @GetMapping
         @PreAuthorize("hasRole('ADMIN')")
-        public Page<Medecin> ListerMedecins(Pageable pageable){
-            return medecinService.ListerMedecins(pageable);
+        public Page<Medecin> ListerMedecins(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "5") int size,
+                                            @RequestParam(defaultValue = "specialite") String sortBy){
+            return medecinService.ListerMedecins(page,size,sortBy);
         }
+
     @GetMapping("/recherche")
     @PreAuthorize("isAuthenticated()")
-    public Page<Medecin> searchMedecinBySpecialite(@RequestParam String specialite, Pageable pageable) {
-        return medecinService.searchBySpecialite(specialite, pageable);
+    public Page<Medecin> ChercherParSpecialite(@RequestParam String specialite,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "5") int size,
+                                               @RequestParam(defaultValue = "specialite") String sortBy) {
+        return medecinService.ChercherparSpecialite(specialite, page,size,sortBy);
     }
     }
 
