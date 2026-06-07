@@ -43,7 +43,7 @@ import java.util.List;
         }
 
     @GetMapping("/recherche")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ADMIN')")
     public Page<Medecin> ChercherParSpecialite(@RequestParam String specialite,
                                                @RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "5") int size,

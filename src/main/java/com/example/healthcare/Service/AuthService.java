@@ -39,7 +39,6 @@ public class AuthService {
 
         User user = userMapper.toEntity(userRequestDTO);
         user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
-        user.setRole(Role.PATIENT);
         User savedUser = userRepository.save(user);
         String token = jwtUtils.generateToken(savedUser);
         AuthResponse dto = userMapper.toDTO(savedUser);
