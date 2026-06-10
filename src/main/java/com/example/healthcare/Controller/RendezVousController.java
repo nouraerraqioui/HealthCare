@@ -32,11 +32,9 @@ public class RendezVousController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Page<RendezVous> ListerRendezVous(@RequestParam(defaultValue = "0") int page,
-                                             @RequestParam(defaultValue = "5") int size,
-                                             @RequestParam(defaultValue = "date") String sortBy) {
+    public Page<RendezVousDTO> ListerRendezVous(Pageable pageable) {
 
-        return rendezVousService.ListerRendezVous(page, size, sortBy);
+        return rendezVousService.ListerRendezVous(pageable);
     }
     @PreAuthorize("hasAnyRole('ADMIN','MEDECIN')")
     @GetMapping("/medecin/{idMedecin}")
@@ -52,8 +50,7 @@ public class RendezVousController {
 
     @GetMapping("/recherche")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
-    public Page<RendezVous> ChercherParStatut(@RequestParam String statut,
-                                              Pageable pageable ) {
+    public Page<RendezVous> ChercherParStatut(@RequestParam String statut, Pageable pageable ) {
         return rendezVousService.ChercherParStatut(statut, pageable);
     }
 }

@@ -48,9 +48,9 @@ public class RendezVousService {
         rendezVous.setStatut(Status_rendezVous.ANNULE);
         return rendezVousMapper.toDTO(rendezVousRepository.save(rendezVous));
     }
-    public Page<RendezVous> ListerRendezVous(int page,int size,String sortBy){
-        Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
-      return rendezVousRepository.findAll(pageable);
+    public Page<RendezVousDTO> ListerRendezVous(Pageable pageable){
+         Page<RendezVous> rendezVous= rendezVousRepository.findAll(pageable);
+         return rendezVous.map(rendezVousMapper::toDTO);
     }
     public RendezVousDTO ChercherParPatient(Long id){
        return rendezVousMapper.toDTO( rendezVousRepository.findByPatient_Id(id));
