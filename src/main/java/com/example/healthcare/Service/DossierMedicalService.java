@@ -47,14 +47,13 @@ public class DossierMedicalService {
         return dossierMedicalMapper.toDTO(dossier);
 
     }
-    public Page<DossierMedical> ListerDossiers(
-            int page,
-            int size
-    ) {
-
-        Pageable pageable = PageRequest.of(page, size);
-
-        return dossierMedicalRepository.findAll(pageable);
+    public Page<DossierMedicalDTO> ListerDossiers(Pageable pageable) {
+        Page<DossierMedical> dossierMedicals= dossierMedicalRepository.findAll(pageable);
+        return dossierMedicals.map(dossierMedicalMapper::toDTO);
+    }
+    public Page<DossierMedicalDTO> chercherParDiagnostic(String diagnostic,Pageable pageable){
+        Page<DossierMedical> d=dossierMedicalRepository.findByDiagnosticContainingIgnoreCase(diagnostic,pageable);
+        return d.map(dossierMedicalMapper::toDTO);
     }
 }
 

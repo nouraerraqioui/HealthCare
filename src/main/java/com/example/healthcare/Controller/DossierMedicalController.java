@@ -6,6 +6,7 @@ import com.example.healthcare.Service.DossierMedicalService;
 import com.example.healthcare.model.DossierMedical;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,16 +39,12 @@ import java.util.List;
     }
         @PreAuthorize("hasAnyRole('ADMIN','MEDECIN')")
         @GetMapping
-        public Page<DossierMedical> ListerDossiers(
-
-                @RequestParam(defaultValue = "0") int page,
-                @RequestParam(defaultValue = "5") int size
-
-        ) {
-
-            return dossierMedicalService.ListerDossiers(
-                    page,
-                    size
-            );
+        public Page<DossierMedicalDTO> ListerDossiers(Pageable pageable) {
+            return dossierMedicalService.ListerDossiers(pageable);
+        }
+        @PreAuthorize("hasRole('ADMIN')")
+        @GetMapping("/diag")
+        public Page<DossierMedicalDTO> chercherParDiag(@RequestParam String diagnostic ,Pageable pageable){
+            return dossierMedicalService.chercherParDiagnostic(diagnostic,pageable);
         }
 }

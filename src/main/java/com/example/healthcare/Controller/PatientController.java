@@ -8,7 +8,6 @@ import com.example.healthcare.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,22 +39,17 @@ final private UserService userService;
 }
 @GetMapping
 @PreAuthorize("hasAnyRole('ADMIN','MEDECIN')")
-public Page<User> ListerPatients(@RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "5") int size,
-                                 @RequestParam(defaultValue = "nom") String sortBy) {
-
-    return userService.ListerPatients(page,size,sortBy);
+public Page<PatientDTO> ListerPatients(Pageable pageable) {
+    return patientService.ListerPatients(pageable);
 
 }
 
 @GetMapping("/recherche")
 @PreAuthorize("hasRole('ADMIN')")
-    public Page<Patient> ConsulterPatient(
+    public Page<PatientDTO> ConsulterPatient(
         @RequestParam String nom,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "5") int size,
-        @RequestParam(defaultValue = "nom") String sortBy) {
+        Pageable pageable) {
 
-    return patientService.ConsulterPatient(nom, page, size, sortBy);
+    return patientService.ConsulterPatient(nom, pageable);
 }
 }

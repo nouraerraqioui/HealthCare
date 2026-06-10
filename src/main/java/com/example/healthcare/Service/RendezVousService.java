@@ -58,8 +58,7 @@ public class RendezVousService {
     public RendezVousDTO ChercherParMedecin(Long id){
         return rendezVousMapper.toDTO( rendezVousRepository.findByMedecin_Id(id));
     }
-    public Page<RendezVous> ChercherParStatut(String statut, int page,int size,String sortBy) {
-        Pageable pageable = PageRequest.of(page,size,Sort.by(sortBy));
+    public Page<RendezVous> ChercherParStatut(String statut, Pageable pageable) {
         return rendezVousRepository.findByStatutContainingIgnoreCase(statut, pageable);
     }
 }

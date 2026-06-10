@@ -29,15 +29,13 @@ public class MedecinService {
       Medecin medecin= medecinRepository.findById(id).orElseThrow(()->new RuntimeException("medecin n'exist pas"+id));
         medecinRepository.delete(medecin);
     }
-    public Page<Medecin> ListerMedecins(int page,int size, String sortBy) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return medecinRepository.findAll(pageable);
+    public Page<MedecinDTO> ListerMedecins(Pageable pageable) {
+        Page<Medecin>medecins=medecinRepository.findAll(pageable);
+        return medecins.map(medecinMapper::toDTO) ;
     }
-    public Page<Medecin> ChercherparSpecialite(String specialite,int page,int size, String sortBy) {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-
-        return medecinRepository.findBySpecialite(specialite, pageable);
+    public Page<MedecinDTO> ChercherparSpecialite(String specialite,Pageable pageable) {
+        Page<Medecin>medecins=medecinRepository.findBySpecialite(specialite, pageable);
+        return medecins.map(medecinMapper::toDTO) ;
     }
 
     }

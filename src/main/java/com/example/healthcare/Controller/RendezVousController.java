@@ -53,9 +53,7 @@ public class RendezVousController {
     @GetMapping("/recherche")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
     public Page<RendezVous> ChercherParStatut(@RequestParam String statut,
-                                              @RequestParam(defaultValue = "0") int page,
-                                              @RequestParam(defaultValue = "5") int size,
-                                              @RequestParam(defaultValue = "date") String sortBy) {
-        return rendezVousService.ChercherParStatut(statut, page, size, sortBy);
+                                              Pageable pageable ) {
+        return rendezVousService.ChercherParStatut(statut, pageable);
     }
 }

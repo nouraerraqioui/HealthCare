@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 
@@ -32,18 +33,13 @@ public class PatientService {
         Patient patient= patientRepository.findById(id).orElseThrow(()->new RuntimeException("Patient n'exist pas"+id));
         patientRepository.delete(patient);
     }
-    public Page<Patient> ListerPatients(int page, int size, String sortBy) {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-
-        return patientRepository.findAll(pageable);
+    public Page<PatientDTO> ListerPatients(Pageable pageable) {
+      Page<Patient>patients=  patientRepository.findAll(pageable);
+        return patients.map(patientMapper::toDTO);
     }
 
-    public Page<Patient> ConsulterPatient(String nom, int page, int size, String sortBy) {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-
-        return patientRepository.findByNom(nom, pageable);
+    public Page<PatientDTO> ConsulterPatient(String nom, Pageable pageable) {
+        Page<Patient>patients= patientRepository.findByNom(nom, pageable);
+        return patients.map(patientMapper::toDTO);
     }
-
 }
