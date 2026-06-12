@@ -7,12 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
-public class DossierMedicalDTO {
+public class DossierMedicalDTO implements Serializable {
     private Long id;
     private String diagnostic;
 

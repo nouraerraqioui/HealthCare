@@ -11,15 +11,28 @@ import java.util.Map;
 @RestControllerAdvice
     public class GlobalExceptionHandler {
 
-        @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
         public ResponseEntity<?> handleValidationErrors(MethodArgumentNotValidException ex) {
 
-            Map<String, String> errors = new HashMap<>();
-
-            ex.getBindingResult().getFieldErrors().forEach(error ->
+         Map<String, String> errors = new HashMap<>();
+          ex.getBindingResult().getFieldErrors().forEach(error ->
                     errors.put(error.getField(), error.getDefaultMessage())
             );
 
-            return ResponseEntity.badRequest().body(errors);
+          return ResponseEntity.badRequest().body(errors);
+        }
+
+        @ExceptionHandler(RuntimeException.class)
+        public ResponseEntity<?> handleRuntime(RuntimeException ex) {
+            Map<String,String> err = new HashMap<>();
+            err.put("error", ex.getMessage());
+            return ResponseEntity.status(org.springframework.http.HttpStatus.NOT_FOUND).body(err);
+        }
+
+     @ExceptionHandler(Exception.class)
+        public ResponseEntity<?> handleException(Exception ex) {
+            Map<String,String> err = new HashMap<>();
+            err.put("error", "Internal server error");
+            return ResponseEntity.status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR).body(err);
         }
     }

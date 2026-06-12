@@ -13,5 +13,7 @@ public interface RendezVousRepository extends JpaRepository<RendezVous,Long> {
     RendezVous findByPatient_Id(Long id);
     RendezVous findByMedecin_Id(Long id);
     Page<RendezVous> findByStatutContainingIgnoreCase(String statut, Pageable pageable);
+    List<RendezVous> findByPatientId(Long patientId);
+
 
 }

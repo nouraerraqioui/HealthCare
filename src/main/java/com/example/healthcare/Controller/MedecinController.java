@@ -17,7 +17,9 @@ import java.util.List;
     @RestController
     @RequestMapping("/api/medecins")
     public class MedecinController {
-        final private MedecinService medecinService;
+
+    
+    private final MedecinService medecinService;
 
         @PostMapping()
         @PreAuthorize("hasRole('ADMIN')")

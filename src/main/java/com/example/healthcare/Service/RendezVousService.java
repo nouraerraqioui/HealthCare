@@ -12,6 +12,8 @@ import com.example.healthcare.model.Status_rendezVous;
 import jakarta.transaction.Transaction;
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +29,7 @@ public class RendezVousService {
     final private MedecinRepository medecinRepository;
     final private RendezVousMapper rendezVousMapper;
 
-
+    @CacheEvict(value = "rendezvous", allEntries = true)
     public RendezVousDTO AjouterRendezVous( RendezVousDTO rendezVousDTO){
 
         Patient patient=patientRepository.findById(rendezVousDTO.getPatientId()).orElseThrow(()->new RuntimeException("patient n'existe pas"));
@@ -38,27 +40,34 @@ public class RendezVousService {
         rendezVous.setStatut(Status_rendezVous.EN_ATTENTE);
         return rendezVousMapper.toDTO(rendezVousRepository.save(rendezVous));
     }
+    @CacheEvict(value = "rendezvous", allEntries = true)
     public RendezVousDTO ModifierRendezVous(Long id,RendezVousDTO rendezVousDTO){
         RendezVous rendezVous=rendezVousRepository.findById(id).orElseThrow(()->new RuntimeException("rendez vous n'existe pas"+id));
         rendezVousMapper.updateEntityfromDto(rendezVousDTO,rendezVous);
        return  rendezVousMapper.toDTO(rendezVousRepository.save(rendezVous));
     }
+    @CacheEvict(value = "rendezvous", allEntries = true)
     public RendezVousDTO AnnulerRenderVous(Long id){
       RendezVous rendezVous=  rendezVousRepository.findById(id).orElseThrow(()->new RuntimeException("rendez vous n'existe pas"+id));
         rendezVous.setStatut(Status_rendezVous.ANNULE);
         return rendezVousMapper.toDTO(rendezVousRepository.save(rendezVous));
     }
+    @Cacheable(value = "rendezvous", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort")
     public Page<RendezVousDTO> ListerRendezVous(Pageable pageable){
          Page<RendezVous> rendezVous= rendezVousRepository.findAll(pageable);
          return rendezVous.map(rendezVousMapper::toDTO);
     }
+    @Cacheable(value = "rendezvousByPatient", key = "#id")
     public RendezVousDTO ChercherParPatient(Long id){
        return rendezVousMapper.toDTO( rendezVousRepository.findByPatient_Id(id));
     }
+    @Cacheable(value = "rendezvousByMedecin", key = "#id")
     public RendezVousDTO ChercherParMedecin(Long id){
         return rendezVousMapper.toDTO( rendezVousRepository.findByMedecin_Id(id));
     }
-    public Page<RendezVous> ChercherParStatut(String statut, Pageable pageable) {
-        return rendezVousRepository.findByStatutContainingIgnoreCase(statut, pageable);
+    @Cacheable(value = "rendezvousByStatut", key = "#statut + '-' + #pageable.pageNumber + '-' + #pageable.pageSize")
+    public Page<RendezVousDTO> ChercherParStatut(String statut, Pageable pageable) {
+        Page<RendezVous> RD= rendezVousRepository.findByStatutContainingIgnoreCase(statut, pageable);
+        return RD.map(rendezVousMapper::toDTO);
     }
 }

@@ -50,7 +50,7 @@ public class RendezVousController {
 
     @GetMapping("/recherche")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDECIN')")
-    public Page<RendezVous> ChercherParStatut(@RequestParam String statut, Pageable pageable ) {
+    public Page<RendezVousDTO> ChercherParStatut(@RequestParam String statut, Pageable pageable ) {
         return rendezVousService.ChercherParStatut(statut, pageable);
     }
 }
