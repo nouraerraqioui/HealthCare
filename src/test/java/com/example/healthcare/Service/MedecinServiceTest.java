@@ -5,39 +5,59 @@ import com.example.healthcare.Mapper.MedecinMapper;
 import com.example.healthcare.Repository.MedecinRepository;
 import com.example.healthcare.model.Medecin;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
-
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class MedecinServiceTest {
-    @Autowired
-    private MedecinService medecinService;
-    @Autowired
+
+    @Mock
     private MedecinRepository medecinRepository;
-    @Autowired
+
+    @Mock
     private MedecinMapper medecinMapper;
 
+    @InjectMocks
+    private MedecinService medecinService;
 
     @Test
     void ajouterMedecin() {
-        MedecinDTO medecinDTO=new MedecinDTO();
+
+
+        MedecinDTO medecinDTO = new MedecinDTO();
         medecinDTO.setNom("reem");
         medecinDTO.setEmail("reem@email.com");
         medecinDTO.setSpecialite("dentiste");
         medecinDTO.setTelephone("0699987654");
 
 
-         MedecinDTO result = medecinService.AjouterMedecin(medecinDTO);
-         assertNotNull(result);
+        Medecin medecinEntity = new Medecin();
+        medecinEntity.setNom("reem");
+        medecinEntity.setEmail("reem@email.com");
 
 
+        MedecinDTO savedDTO = new MedecinDTO();
+        savedDTO.setNom("reem");
+        savedDTO.setEmail("reem@email.com");
+
+        // MOCK BEHAVIOR
+        when(medecinMapper.toEntity(medecinDTO)).thenReturn(medecinEntity);
+        when(medecinRepository.save(medecinEntity)).thenReturn(medecinEntity);
+        when(medecinMapper.toDTO(medecinEntity)).thenReturn(savedDTO);
+
+
+        MedecinDTO result = medecinService.AjouterMedecin(medecinDTO);
+
+
+        assertNotNull(result);
+        assertEquals("reem", result.getNom());
+
+        verify(medecinRepository, times(1)).save(medecinEntity);
     }
-
-
 }
